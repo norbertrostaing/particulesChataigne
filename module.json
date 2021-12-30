@@ -1,0 +1,702 @@
+{
+	"name": "Particules",
+	"type": "OSC",
+	"path": "Software",
+	
+	"version": "0.1",
+	"description": "Processing particules generator",
+	"url":"https://github.com/norbertrostaing/Particules",
+	"downloadURL": "https://github.com/norbertrostaing/Particules/archive/refs/heads/main.zip",
+	
+	"hasInput": false,
+	"hasOutput": true,
+
+	"hideDefaultCommands": true,
+	"hideDefaultParameters": [
+	],
+
+	"defaults": {
+		"OSC Input": {
+			"localPort" : 8000,
+		},
+		"OSC Outputs": {
+			"OSC Output": {
+				"local" : true,
+				"remotePort" : 9000,
+				"listenToFeedback":false
+			}
+		}
+	},
+	
+	"parameters": {
+	},
+	
+	"scripts": [
+		"particules.js"
+	],
+	
+	"values": {
+	},
+	
+	"commands": {
+
+
+		"Emitter Position" : {
+			"menu" : "Emitter",
+			"callback" : "emitterPosition",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Point2D",
+					"default": [0,0], 
+					"min":[0,0],
+					"max":[1,1],
+					"useForMapping": true
+				}, 
+			}
+		},
+
+
+		"Emitter Line Length" : {
+			"menu" : "Emitter",
+			"callback" : "emitterLineLength",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Line Angle" : {
+			"menu" : "Emitter",
+			"callback" : "emitterLineAngle",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min":0,
+					"max":1,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Color" : {
+			"menu" : "Emitter",
+			"callback" : "emitterColor",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Color",
+					"default": [1,1, 1,1], 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Active" : {
+			"menu" : "Emitter",
+			"callback" : "emitterActive",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Boolean",
+					"default": false, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Rate" : {
+			"menu" : "Emitter",
+			"callback" : "emitterRate",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Range Inner" : {
+			"menu" : "Emitter",
+			"callback" : "emitterRangeInner",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Range Width" : {
+			"menu" : "Emitter",
+			"callback" : "emitterRangeWidth",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter LifeTime" : {
+			"menu" : "Emitter",
+			"callback" : "emitterLifeTime",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Weight" : {
+			"menu" : "Emitter",
+			"callback" : "emitterWeight",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Particule speed" : {
+			"menu" : "Emitter",
+			"callback" : "emitterInitSpeed",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 1, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Init Angle" : {
+			"menu" : "Emitter",
+			"callback" : "emitterInitAngle",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 1, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Init Spread" : {
+			"menu" : "Emitter",
+			"callback" : "emitterInitSpread",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 1, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Init Speed Angle" : {
+			"menu" : "Emitter",
+			"callback" : "emitterInitSpeedAngle",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 1, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Init Speed Spread" : {
+			"menu" : "Emitter",
+			"callback" : "emitterInitSpeedSpread",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 1, 
+					"min":0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Emitter Fluxes" : {
+			"menu" : "Emitter",
+			"callback" : "emitterFluxes",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "String",
+					"description" : "indexes of fluxes, separated by coma"
+				}, 
+			}
+		},
+
+		"Emitter Noise Fluxes" : {
+			"menu" : "Emitter",
+			"callback" : "emitterNoiseFluxes",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "String",
+					"description" : "indexes of noise fluxes, separated by coma"
+				}, 
+			}
+		},
+
+
+		"Attractor Position" : {
+			"menu" : "Attractor",
+			"callback" : "attractorPosition",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Point2D",
+					"default": [0,0], 
+					"min":[0,0],
+					"max":[1,1],
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Attractor Active" : {
+			"menu" : "Attractor",
+			"callback" : "attractorActive",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Boolean",
+					"default": false, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Attractor Strength" : {
+			"menu" : "Attractor",
+			"callback" : "attractorStrength",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 1, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Attractor Killing Range" : {
+			"menu" : "Attractor",
+			"callback" : "attractorKillingRange",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 1, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+
+
+		"Flux Image" : {
+			"menu" : "Flux",
+			"callback" : "fluxImage",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "File"
+				}, 
+			}
+		},
+
+		"Flux File" : {
+			"menu" : "Flux",
+			"callback" : "fluxFile",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "File"
+				}, 
+			}
+		},
+
+		"Flux Active" : {
+			"menu" : "Flux",
+			"callback" : "fluxActive",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Boolean",
+					"default": false, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Flux Strength" : {
+			"menu" : "Flux",
+			"callback" : "fluxStrength",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": 1, 
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Flux Speed Mult" : {
+			"menu" : "Flux",
+			"callback" : "fluxSpeedMult",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": 1, 
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Noise Flux Active" : {
+			"menu" : "Noise Flux",
+			"callback" : "noiseFluxActive",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": -1, 
+					"min":-1,
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Boolean",
+					"default": false, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Noise Flux Strength" : {
+			"menu" : "Noise Flux",
+			"callback" : "noiseFluxStrength",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": 1, 
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Noise Flux Speed Mult" : {
+			"menu" : "Noise Flux",
+			"callback" : "noiseFluxSpeedMult",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": 1, 
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Noise Flux Scale" : {
+			"menu" : "Noise Flux",
+			"callback" : "noiseFluxScale",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": 1, 
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 1, 
+					"min" : 1,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Noise Flux Speed" : {
+			"menu" : "Noise Flux",
+			"callback" : "noiseFluxSpeed",
+			"parameters" : {
+				"Number": {
+					"type": "Integer",
+					"default": 1, 
+					"useForMapping": true
+				}, 
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min" : 0,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Main Background Color" : {
+			"menu" : "Main",
+			"callback" : "mainBackgroundColor",
+			"parameters" : {
+				"Value": {
+					"type": "Color",
+					"default": [1,1, 1,1], 
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Main Alpha" : {
+			"menu" : "Main",
+			"callback" : "mainBackgroundAlpha",
+			"parameters" : {
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min" : 0,
+					"max" : 1,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Main Slippyness" : {
+			"menu" : "Main",
+			"callback" : "mainSlippyness",
+			"parameters" : {
+				"Value": {
+					"type": "Float",
+					"default": 0, 
+					"min" : 0,
+					"max" : 1,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Main Explose" : {
+			"menu" : "Main",
+			"callback" : "mainExplose",
+			"parameters" : {
+				"Position": {
+					"type": "Point2D",
+					"default": [0,0], 
+					"min":[0,0],
+					"max":[1,1],
+					"useForMapping": true
+				}, 
+				"Range": {
+					"type": "Float",
+					"default": 0, 
+					"min" : 0,
+					"max" : 1,
+					"useForMapping": true
+				}, 
+				"Strength": {
+					"type": "Float",
+					"default": 0, 
+					"min" : 0,
+					"max" : 1,
+					"useForMapping": true
+				}, 
+			}
+		},
+
+		"Main Border" : {
+			"menu" : "Main",
+			"callback" : "mainBorderType",
+			"parameters" : {
+				"Value": {
+					"type":"Enum",
+					"options": {
+						"Loop" : 0,
+						"Bounce" : 1,
+						"Free" : 2
+					}
+				}, 
+			}
+		},
+
+
+
+
+
+
+	}
+}
