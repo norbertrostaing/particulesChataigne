@@ -45,11 +45,13 @@ var autoCreateMain;
 var autoCreateEmitter;
 var autoCreateAttractor;
 var autoCreateFlux;
+var autoCreateNoiseFlux;
+var autoCreateSweep;
 
 var UIColSize = 300;
 var UImarginSize = 10;
 var UIOtherHeight = 200;
-var UIEmitterHeight = 510;
+var UIEmitterHeight = 560;
 
 
 function init()
@@ -62,6 +64,7 @@ function init()
 	autoCreateAttractor = tools.addTrigger("Create Attractor", "Create an attractor with given name");
 	autoCreateFlux = tools.addTrigger("Create Flux", "Create a flux with given name");
 	autoCreateNoiseFlux = tools.addTrigger("Create Noise Flux", "Create a noise flux with given name");
+	autoCreateSweep = tools.addTrigger("Create Sweep", "Create a sweep with given name");
 	// test.addFloatParameter("position","Emmiter position", 0,0,1);
 
 	//myFloatParam.set(5); //The .set() function set the parameter to this value.
@@ -133,6 +136,7 @@ function moduleParameterChanged(param)
 	else if (param.is(autoCreateAttractor)) {createCVMAttractor();} 
 	else if (param.is(autoCreateFlux)) {createCVMFlux();} 
 	else if (param.is(autoCreateNoiseFlux)) {createCVMNoiseFlux();} 
+	else if (param.is(autoCreateSweep)) {createCVMSweep();} 
 	else {}
 
 }
@@ -242,11 +246,17 @@ function emitterInitSpeedAngle(id, value) {
 function emitterInitSpeedSpread(id, value) {
  	local.send("/Emitter/"+id+"/initSpeedSpread", value);
  }
+function emitterAttractors (id, value) {
+ 	local.send("/Emitter/"+id+"/attractors", value);
+ }
 function emitterFluxes (id, value) {
  	local.send("/Emitter/"+id+"/fluxes", value);
  }
 function emitterNoiseFluxes (id, value) {
  	local.send("/Emitter/"+id+"/noiseFluxes", value);
+ }
+function emitterSweeps (id, value) {
+ 	local.send("/Emitter/"+id+"/sweeps", value);
  }
 
 function attractorPosition(id, value) {
@@ -261,6 +271,9 @@ function attractorPosition(id, value) {
  }
  function attractorKillingRange (id, value) {
  	local.send("/Attractor/"+id+"/killingRange", value);
+ }
+ function attractorSpiralAngle (id, value) {
+ 	local.send("/Attractor/"+id+"/spiralAngle", value);
  }
 
 function fluxImage(id, value) {
@@ -295,6 +308,20 @@ function fluxFile(id, value) {
  }
  function noiseFluxSpeed(id, value) {
  	local.send("/NoiseFlux/"+id+"/speed", value);
+ }
+
+function sweepPosition(id, value) {
+	local.send("/Sweep/"+id+"/position", value);
+}
+ function sweepActive (id, value) {
+ 	value = value ? 1 : 0;
+ 	local.send("/Sweep/"+id+"/active", value);
+ }
+ function sweepStrength (id, value) {
+ 	local.send("/Sweep/"+id+"/strength", value);
+ }
+ function sweepRange (id, value) {
+ 	local.send("/Sweep/"+id+"/range", value);
  }
 
 
@@ -395,8 +422,10 @@ function createCVMEmitter() {
 	var cvParticuleSpeed = createCVAnMapping(customVariableGroup, mappingState, "Float", "Init speed", "Emitter", "Emitter Particule speed", id);
 	var cvInitSpeedAngle = createCVAnMapping(customVariableGroup, mappingState, "Float", "Init Speed Angle", "Emitter", "Emitter Init Speed Angle", id);
 	var cvInitSpeedSpread = createCVAnMapping(customVariableGroup, mappingState, "Float", "Init Speed Spread", "Emitter", "Emitter Init Speed Spread", id);	
+	var cvAttractors = createCVAnMapping(customVariableGroup, mappingState, "String", "Attractors", "Emitter", "Emitter Attractors", id);
 	var cvFluxes = createCVAnMapping(customVariableGroup, mappingState, "String", "Fluxes", "Emitter", "Emitter Fluxes", id);
 	var cvNoiseFluxes = createCVAnMapping(customVariableGroup, mappingState, "String", "Noise Fluxes", "Emitter", "Emitter Noise Fluxes", id);
+	var cvSweeps = createCVAnMapping(customVariableGroup, mappingState, "String", "Sweeps", "Emitter", "Emitter Sweeps", id);
 
 	customVariableGroup.presets.addItem();
 
@@ -459,11 +488,13 @@ function createCVMAttractor() {
 	var cvActive = createCVAnMapping(customVariableGroup, mappingState, "Bool", "Active", "Attractor", "Attractor Active");
 	var cvPosition = createCVAnMapping(customVariableGroup, mappingState, "Point2D", "Position", "Attractor", "Attractor Position", id);
 	var cvStrength = createCVAnMapping(customVariableGroup, mappingState, "Float", "Strength", "Attractor", "Attractor Strength", id);
+	var cvSpiralAngle = createCVAnMapping(customVariableGroup, mappingState, "Float", "Spiral Angle", "Attractor", "Attractor Spiral Angle", id);
 	var cvKillingRange = createCVAnMapping(customVariableGroup, mappingState, "Float", "Killing Range", "Attractor", "Attractor Killing Range", id);
 	customVariableGroup.presets.addItem();
 	cvPosition.cv["newPoint2DParameter"].setRange([0,0],[1,1]);
 	cvPosition.cv["newPoint2DParameter"].set([0.5,0.5]);
 	cvStrength.cv["newFloatParameter"].setRange(0,100);
+	cvSpiralAngle.cv["newFloatParameter"].setRange(-1,1);
 	cvKillingRange.cv["newFloatParameter"].setRange(0,100);
 	customVariableGroup.presets.addItem();
 
@@ -543,6 +574,37 @@ function createCVMNoiseFlux() {
 	mappingState.viewUISize.set(UIColSize,UIOtherHeight);
 	mappingState.viewUIPosition.set(id*(UIColSize+UImarginSize), (UIEmitterHeight + UImarginSize) + 3*(UIOtherHeight + UImarginSize));
 
+
+}
+
+
+
+function createCVMSweep() {
+	var name = autoCreateName.get();
+	var id = autoCreateId.get();
+	if (name == "") {name = "Sweep "+id; }
+
+	var customVariableGroup = root.customVariables.addItem();
+	var groupName = " "+name;
+	customVariableGroup.setName(groupName);
+
+	var mappingState = root.states.addItem("State");
+	mappingState.setName("Mappings - "+name);
+
+	var cvActive = createCVAnMapping(customVariableGroup, mappingState, "Bool", "Active", "Sweep", "Sweep Active");
+	var cvPosition = createCVAnMapping(customVariableGroup, mappingState, "Point2D", "Position", "Sweep", "Sweep Position", id);
+	var cvStrength = createCVAnMapping(customVariableGroup, mappingState, "Float", "Strength", "Sweep", "Sweep Strength", id);
+	var cvRange = createCVAnMapping(customVariableGroup, mappingState, "Float", "Range", "Sweep", "Sweep Range", id);
+	customVariableGroup.presets.addItem();
+	cvPosition.cv["newPoint2DParameter"].setRange([0,0],[1,1]);
+	cvPosition.cv["newPoint2DParameter"].set([0.5,0.5]);
+	cvStrength.cv["newFloatParameter"].setRange(0,1);
+	cvRange.cv["newFloatParameter"].setRange(0,400);
+	customVariableGroup.presets.addItem();
+
+	util.delayThreadMS(500);
+	mappingState.viewUISize.set(UIColSize,UIOtherHeight);
+	mappingState.viewUIPosition.set(id*(UIColSize+UImarginSize), (UIEmitterHeight + UImarginSize) + 4*(UIOtherHeight + UImarginSize));
 
 }
 
